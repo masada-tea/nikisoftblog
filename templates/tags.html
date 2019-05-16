@@ -4,29 +4,29 @@
 {% block header %}
 <link rel="self" href="{{ config.ID }}/">
 <link rel="hub" href="https://pubsubhubbub.superfeedr.com/">
-<meta content="profile" property="og:type" />       
-<meta content="{{ config.ID }}" property="og:url" />
-<meta content="{{ config.USERNAME }}" property="og:site_name" />                                         
-<meta content="{{ config.USERNAME }}" property="og:title" />                                             
-<meta content="{{ me.summary | html2plaintext }}" property="og:description" />                                            
-<meta content="{{ me.icon.url }}" property="og:image" />                                                 
-<meta content="200" property="og:image:width" />    
-<meta content="200" property="og:image:height" />   
-<meta content="summary" property="twitter:card" />  
-<meta content="{{config.USERNAME}}@{{ config.DOMAIN}}" property="profile:username" />
+<meta content="article" property="og:type"/>
+<meta content="{{ config.ID }}" property="og:url"/>
+<meta content="{{ config.USERNAME }}" property="og:site_name"/>
+<meta content="{{ config.USERNAME }}" property="og:title"/>
+<meta content="{{ me.summary | html2plaintext }}" property="og:description"/>
+<meta content="{{ me.icon.url }}" property="og:image"/>
+<meta content="200" property="og:image:width"/>
+<meta content="200" property="og:image:height"/>
+<meta content="summary" property="twitter:card"/>
+<meta content="{{config.USERNAME}}@{{ config.DOMAIN}}" property="profile:username"/>
 {% endblock %}
 {% block content %}
-<div class="h-feed" id="container">
-<data class="p-name" value="#{{tag}}">
-
+<data class="p-name" value="#{{tag}}"></data>
 {% include "header.html" %}
-<h2>#{{ tag }}</h2>
-<div id="notes">
-	{% for item in outbox_data %}
-	{{ utils.display_note(item.activity.object, meta=item.meta) }}
-	{% endfor %}
+<div class="content pure-u-1 pure-u-md-3-4">
+<div>
+<div class="posts">
+<h1 class="content-subhead">#{{ tag }}</h1>
+{% for item in outbox_data %}
+{{ utils.display_note(item.activity.object, meta=item.meta) }}
+{% endfor %}
 </div>
-
+</div>
 </div>
 {% endblock %}
 {% block links %}

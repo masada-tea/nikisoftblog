@@ -3,70 +3,51 @@
 {% block header %}
 <link rel="self" href="{{ config.ID }}/">
 <link rel="hub" href="https://pubsubhubbub.superfeedr.com/">
-<meta content="profile" property="og:type" />       
-<meta content="{{ config.ID }}" property="og:url" />
-<meta content="{{ config.USERNAME }}" property="og:site_name" />                                         
-<meta content="{{ config.USERNAME }}" property="og:title" />                                             
-<meta content="{{ me.summary | html2plaintext }}" property="og:description" />                                            
-<meta content="{{ me.icon.url }}" property="og:image" />                                                 
-<meta content="200" property="og:image:width" />    
-<meta content="200" property="og:image:height" />   
-<meta content="summary" property="twitter:card" />  
-<meta content="{{config.USERNAME}}@{{ config.DOMAIN}}" property="profile:username" />
+<meta content="profile" property="og:type"/>
+<meta content="{{ config.ID }}" property="og:url"/>
+<meta content="{{ config.USERNAME }}" property="og:site_name"/>
+<meta content="{{ config.USERNAME }}" property="og:title"/>
+<meta content="{{ me.summary | html2plaintext }}" property="og:description"/>
+<meta content="{{ me.icon.url }}" property="og:image"/>
+<meta content="200" property="og:image:width"/>
+<meta content="200" property="og:image:height"/>
+<meta content="summary" property="twitter:card"/>
+<meta content="{{config.USERNAME}}@{{ config.DOMAIN}}" property="profile:username"/>
 {% endblock %}
 {% block content %}
-<div class="h-feed" id="container">
-<data class="p-name" value="{{config.USERNAME}} notes"></data>
-
 {% include "header.html" %}
-
-<div id="notes">
-	{% for item in pinned %}
-    {% if item.meta.pinned %}
-    <p style="margin-left:65px;padding-bottom:5px;">
-    <span class="bar-item-pinned">pinned</span>
-    </p>
-    {% endif %}
-
-    {{ utils.display_note(item.activity.object, meta=item.meta, no_color=True) }}
-    {% endfor %}
-   
-	{% for item in outbox_data %}
-
-	{% if item | has_type('Announce') %}
-	{% if "actor" in item.meta %}
-        {% set boost_actor = item.meta.actor %}
-        {% if session.logged_in %}
-        <div style="margin-left:65px;padding-bottom:5px;margin-bottom:15px;">
-        <span class="bar-item-no-hover"><a style="color:#808080;" href="{{ boost_actor.url | get_url }}">{{ boost_actor.name }}</a> boosted</span>
-<form action="/api/undo" class="action-form"  method="POST">
-<input type="hidden" name="redirect" value="/"/>
-<input type="hidden" name="id" value="{{ item.remote_id }}"/>
-<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-<button type="submit" class="bar-item">unboost</button>
-</form>
-        </div>
-        {% else %}
-        <p style="margin-left:65px;padding-bottom:5px;">
-        <span class="bar-item-no-hover"><a style="color:#808080;" href="{{ boost_actor.url | get_url }}">{{ boost_actor.name }}</a> boosted</span>
-        </p>
-        {% endif %}
-	{% endif %}
-        {% if item.meta.object %}
-        {{ utils.display_note(item.meta.object, ui=False, meta={'actor': item.meta.object_actor}) }}
-        {% endif %}
-	{% elif item | has_type('Create') %}
-        {{ utils.display_note(item.activity.object, meta=item.meta, no_color=True) }}
-    {% endif %}
-
-	{% endfor %}
-
-    {{ utils.display_pagination(older_than, newer_than) }}
-    </div>
-
+<data class="p-name" value="{{config.USERNAME}} notes"></data>
+<div class="content pure-u-1 pure-u-md-3-4">
+<div>
+{% if pinned %}
+<div class="posts">
+<h1 class="content-subhead">Pinned Posts</h1>
+{% for item in pinned %}
+{{ utils.display_note(item.activity.object, meta=item.meta, no_color=True) }}
+{% endfor %}
+</div>
+{% endif %}
+<div class="posts">
+<h1 class="content-subhead">Recent Posts</h1>
+{% for item in outbox_data %}
+{% if item | has_type('Announce') %}
+{% if "actor" in item.meta %}
+{% set boost_actor = item.meta.actor %}
+<p><span class="bar-item-no-hover"><a style="color:#808080;" href="{{ boost_actor.url | get_url }}">{{ boost_actor.name }}</a> boosted</span></p>
+{% endif %}
+{% if item.meta.object %}
+{{ utils.display_note(item.meta.object, ui=True, meta={'actor':item.meta.object_actor,'boosted':item.remote_id}) }}
+{% endif %}
+{% elif item | has_type('Create') %}
+{{ utils.display_note(item.activity.object, meta=item.meta, no_color=True) }}
+{% endif %}
+{% endfor %}
+{{ utils.display_pagination(older_than, newer_than) }}
+</div>
+</div>
 </div>
 {% endblock %}
-{% block links %}<link rel="alternate" href="{{ config.ME.url | get_url }}" title="ActivityPub profile"  type="application/activity+json">
+{% block links %}<link rel="alternate" href="{{ config.ME.url | get_url }}" title="ActivityPub profile" type="application/activity+json">
 <link rel="alternate" href="{{ config.ID }}/feed.json" type="application/json" title="JSON Feed">
 <link rel="alternate" href="{{ config.ID }}/feed.rss" type="application/rss+xml" title="RSS">
 <link rel="alternate" href="{{ config.ID }}/feed.atom" type="application/atom+xml" title="Atom 0.3">

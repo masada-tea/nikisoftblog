@@ -1,28 +1,9 @@
-# microblog.pub
-
+# microblog.pub - Nikisoft edition
 <p align="center">
-  <img 
-    src="https://sos-ch-dk-2.exo.io/microblogpub/microblobpub.png" 
-    width="200" height="200" border="0" alt="microblog.pub">
+<img src="https://sos-ch-dk-2.exo.io/microblogpub/microblobpub.png" width="200" height="200" border="0" alt="microblog.pub">
 </p>
-<p align="center">
-<a href="https://d.a4.io/tsileo/microblog.pub"><img src="https://d.a4.io/api/badges/tsileo/microblog.pub/status.svg" alt="Build Status"></a>
-<a href="https://matrix.to/#/#microblog.pub:matrix.org"><img src="https://img.shields.io/badge/matrix-%23microblog.pub-blue.svg" alt="#microblog.pub on Matrix"></a>
-<a href="https://github.com/tsileo/microblog.pub/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-AGPL_3.0-blue.svg?style=flat" alt="License"></a>
-<a href="https://github.com/ambv/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
-</p>
-
-
 <p align="center">A self-hosted, single-user, <a href="https://activitypub.rocks">ActivityPub</a> powered microblog.</p>
-
-**Still in early development.**
-
-## /!\ Note to adventurer
-
-If you are running an instance with Celery/RabbitMQ, you will need to [perform a migration](https://github.com/tsileo/microblog.pub/tree/drop-celery#perform-the-drop-celery-migration).
-
-Getting closer to a stable release, it should be the "last" migration.
-
+**Quite early state but already stable enough for hosting your blog**
 ## Features
 
  - Implements a basic [ActivityPub](https://activitypub.rocks/) server (with federation)
@@ -35,10 +16,6 @@ Getting closer to a stable release, it should be the "last" migration.
  - Comes with an admin UI with notifications and the stream of people you follow
  - Allows you to attach files to your notes
    - Privacy-aware image upload endpoint that strip EXIF meta data before storing the file
- - No JavaScript, **that's it**. Even the admin UI is pure HTML/CSS
- - Easy to customize (the theme is written Sass)
-   - mobile-friendly theme
-   - with dark and light version
  - Microformats aware (exports `h-feed`, `h-entry`, `h-cards`, ...)
  - Exports RSS/Atom/[JSON](https://jsonfeed.org/) feeds
     - You stream/timeline is also available in an (authenticated) JSON feed
@@ -47,12 +24,6 @@ Getting closer to a stable release, it should be the "last" migration.
    - With a good setup, cached content can be served most of the time
    - You can setup a "purge" hook to let you invalidate cache when the microblog was updated
  - Deployable with Docker (Docker compose for everything: dev, test and deployment)
- - Focused on testing
-   - Tested against the [official ActivityPub test suite](https://test.activitypub.rocks/) ([report submitted](https://github.com/w3c/activitypub/issues/308))
-   - [CI runs "federation" tests against two instances](https://d.a4.io/tsileo/microblog.pub)
-   - Project is running an up-to-date instance
-   - The core ActivityPub code/tests are in [Little Boxes](https://github.com/tsileo/little-boxes)
-   - Manually tested against [Mastodon](https://github.com/tootsuite/mastodon)
 
 ## ActivityPub
 
@@ -62,14 +33,28 @@ Activities are verified using HTTP Signatures or by fetching the content on the 
 
 ## Running your instance
 
+### Dependencies
+
+Please make sure that you have the following software installed when starting the installation:
+- Python 3
+- Python 3 Virtualenv
+- Go
+- MongoDB
+
 ### Installation
 
 ```shell
-$ git clone https://github.com/tsileo/microblog.pub
-$ cd microblog.pub
-$ pip install -r requirements.txt
-$ make css
-$ cp -r config/me.sample.yml config/me.yml
+$ git clone https://notabug.org/nipos/nikisoftblog
+$ cd nikisoftblog
+$ make install
+$ sudo make pt-install
+$ make config
+$ make password
+$ sudo make services
+$ sudo systemctl enable poussetaches
+$ sudo systemctl start poussetaches
+$ sudo systemctl enable microblog
+$ sudo systemctl start microblog
 ``` 
 
 ### Configuration
@@ -90,26 +75,6 @@ domain: 'your-domain.tld'
 summary: 'your summary'
 https: true
 pass: $2b$12$iW497g...
-```
-
-### Deployment
-
-```shell
-$ make update
-```
-
-## Development
-
-The most convenient way to hack on microblog.pub is to run the server locally, and run
-
-
-```shell
-# One-time setup
-$ pip install -r requirements.txt
-# Start MongoDB and poussetaches
-$ docker-compose -f docker-compose-dev.yml up -d
-# Run the server locally
-$ FLASK_DEBUG=1 MICROBLOGPUB_DEBUG=1 FLASK_APP=app.py flask run -p 5005 --with-threads
 ```
 
 ## API
@@ -326,8 +291,3 @@ $ http GET https://microblog.pub/api/stream Authorization:'Bearer <token>'
 
 ```json
 ```
-
-
-## Contributions
-
-PRs are welcome, please open an issue to start a discussion before your start any work.

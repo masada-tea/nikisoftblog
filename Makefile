@@ -1,28 +1,25 @@
+.SILENT: install pt-install services config password
 PYTHON=python
+
+install:
+	echo "Setting up Python Virtualenv..."
+	virtualenv env
+	$$(source env/bin/activate)
+	echo "Installing dependencies..."
+	pip install -r requirements.txt
+	echo "done"
+
+pt-install:
+	printf "Installing poussetaches..."
+	cp -R poussetaches /usr/bin/poussetaches
+	echo "done"
+
+services:
+	./mkservices.sh
+
+config:
+	./mkconfig.sh
 
 password:
 	$(PYTHON) -c "import bcrypt; from getpass import getpass; print(bcrypt.hashpw(getpass().encode('utf-8'), bcrypt.gensalt()).decode('utf-8'))"
-
-docker:
-	mypy . --ignore-missing-imports
-	docker build . -t microblogpub:latest
-
-reload-fed:
-	docker build . -t microblogpub:latest
-	docker-compose -p instance2 -f docker-compose-tests.yml stop
-	docker-compose -p instance1 -f docker-compose-tests.yml stop
-	WEB_PORT=5006 CONFIG_DIR=./tests/fixtures/instance1/config docker-compose -p instance1 -f docker-compose-tests.yml up -d --force-recreate --build
-	WEB_PORT=5007 CONFIG_DIR=./tests/fixtures/instance2/config docker-compose -p instance2 -f docker-compose-tests.yml up -d --force-recreate --build
-
-poussetaches:
-	git clone https://github.com/tsileo/poussetaches.git pt && cd pt && docker build . -t poussetaches:latest && cd - && rm -rf pt
-
-reload-dev:
-	# docker build . -t microblogpub:latest
-	docker-compose -f docker-compose-dev.yml up -d --force-recreate
-
-update:
-	git pull
-	docker build . -t microblogpub:latest
-	docker-compose stop
-	docker-compose up -d --force-recreate --build
+	echo "Please copy this code into the 'pass' variable in config/me.yml"

@@ -1,0 +1,18 @@
+@font-face {
+font-family: 'josefin-sans';
+src:  url('josefin-sans.woff') format('woff'),
+url('josefin-sans.svg#Josefin-Sans') format('svg'),
+url('josefin-sans.eot'),
+url('josefin-sans.eot?#iefix') format('embedded-opentype'); 
+font-weight: normal;
+font-style: normal;
+}
+@font-face {
+font-family: 'josefin-sans';
+src:  url('josefin-sans-bold.woff') format('woff'),
+url('josefin-sans-bold.svg#Josefin-Sans-Bold') format('svg'),
+url('josefin-sans-bold.eot'),
+url('josefin-sans-bold.eot?#iefix') format('embedded-opentype'); 
+font-weight: bold;
+font-style: normal;
+}

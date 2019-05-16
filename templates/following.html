@@ -4,29 +4,13 @@
 {% block header %}
 {% endblock %}
 {% block content %}
-<div id="container">
 {% include "header.html" %}
-
-<div id="following">
-	{% for (follow_id, follow) in following_data %}
-    {% if session.logged_in %}
-<div style="margin-left:90px;padding-bottom:5px;margin-bottom:15px;">
-<form action="/api/undo" class="action-form"  method="POST">
-<input type="hidden" name="redirect" value="{{ request.path }}"/>
-<input type="hidden" name="id" value="{{ follow_id }}"/>
-<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-<button type="submit" class="bar-item">unfollow</button>
-</form>
-        </div>
-
-    {% endif %}
-    <div style="height: 100px;">
-	{{ utils.display_actor_inline(follow, size=80) }}
-    </div>
-	{% endfor %}
-    {{ utils.display_pagination(older_than, newer_than) }}
+<div class="content pure-u-1 pure-u-md-3-4" id="following">
+{% for (follow_id, follow) in following_data %}
+{{ utils.display_actor_inline(follow, size=80,actions={"unfollowbtn":True,"fid":follow_id}) }}
+{% endfor %}
+{{ utils.display_pagination(older_than, newer_than) }}
 </div>
-
 </div>
 {% endblock %}
 {% block links %}

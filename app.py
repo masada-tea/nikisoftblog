@@ -84,6 +84,9 @@ from config import MEDIA_CACHE
 from config import PASS
 from config import USERNAME
 from config import VERSION
+from config import PUBLIC_DOMAIN
+from config import ACTOR_URL
+from config import PORT
 from config import _drop_db
 from utils.key import get_secret_key
 from utils.lookup import lookup
@@ -92,8 +95,7 @@ from utils.media import Kind
 from poussetaches import PousseTaches
 
 p = PousseTaches(
-    os.getenv("MICROBLOGPUB_POUSSETACHES_HOST", "http://localhost:7991"),
-    os.getenv("MICROBLOGPUB_INTERNAL_HOST", "http://localhost:5000"),
+    os.getenv("MICROBLOGPUB_POUSSETACHES_HOST", "http://localhost:7991"),f"http://localhost:{PORT}",
 )
 
 # p = PousseTaches("http://localhost:7991", "http://localhost:5000")
@@ -827,7 +829,7 @@ def index():
         pinned = list(DB.activities.find(q_pinned))
 
     outbox_data, older_than, newer_than = paginated_query(
-        DB.activities, q, limit=25 - len(pinned)
+        DB.activities, q, limit=config.LIMIT
     )
 
     resp = render_template(
@@ -851,7 +853,7 @@ def with_replies():
         "meta.public": True,
         "meta.undo": False,
     }
-    outbox_data, older_than, newer_than = paginated_query(DB.activities, q)
+    outbox_data, older_than, newer_than = paginated_query(DB.activities, q, limit=config.LIMIT)
 
     return render_template(
         "index.html",
@@ -1016,7 +1018,7 @@ def nodeinfo():
                 "openRegistrations": False,
                 "usage": {"users": {"total": 1}, "localPosts": DB.activities.count(q)},
                 "metadata": {
-                    "sourceCode": "https://github.com/tsileo/microblog.pub",
+                    "sourceCode": config.SOURCE_URL,
                     "nodeName": f"@{USERNAME}@{DOMAIN}",
                 },
             }
@@ -1049,7 +1051,7 @@ def wellknown_webfinger():
     """Enable WebFinger support, required for Mastodon interopability."""
     # TODO(tsileo): move this to little-boxes?
     resource = request.args.get("resource")
-    if resource not in [f"acct:{USERNAME}@{DOMAIN}", ID]:
+    if resource not in [f"acct:{USERNAME}@{DOMAIN}",f"acct:{USERNAME}@{PUBLIC_DOMAIN}",ID,ACTOR_URL]:
         abort(404)
 
     out = {

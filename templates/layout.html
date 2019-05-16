@@ -4,53 +4,143 @@
 <meta charset="utf-8">
 <meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>{% block title %}{{ config.NAME }}{% endblock %}'s microblog</title>
-<link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+<link rel="shortcut icon" type="image/x-icon" href="{{ config.FAVICON }}">
+<title>{% block title %}{{ config.NAME }}{% endblock %}</title>
+<link rel="stylesheet" href="{{ config.BASE_URL }}/pure.css">
+<link rel="stylesheet" href="{{ config.BASE_URL }}/grids.css">
+<link rel="stylesheet" href="{{ config.BASE_URL }}/style.css">
+<link rel="stylesheet" href="{{ config.BASE_URL }}/fonts.css">
 <link rel="authorization_endpoint" href="{{ config.ID }}/indieauth">
 <link rel="token_endpoint" href="{{ config.ID }}/token">
-{% if not request.args.get("older_than") and not request.args.get("previous_than") %}<link rel="canonical" href="https://{{ config.DOMAIN }}{{ request.path }}">{% endif %}
+{% if not request.args.get("older_than") and not request.args.get("previous_than") %}<link rel="canonical" href="{{ config.BASE_URL }}{{ request.path }}">{% endif %}
 {% block links %}{% endblock %}
-{% if config.THEME_COLOR %}<meta name="theme-color" content="{{ config.THEME_COLOR }}">{% endif %}
-<style>{{ config.CSS | safe }}
+<style>
+.pure-g {
+letter-spacing:0;
+}
 .emoji {
-    width: 20px;
+width:20px;
+margin-bottom:-5px;
+}
+.pure-button-group .action-form {
+display:inline-block;
+}
+.pure-button-group .pure-button {
+border-right:0;
+}
+.brand-title a {
+color:#FFFFFF;
+text-decoration:none;
+}
+a.pure-button,a.pure-menu-link {
+text-decoration:none;
+}
+#admin-menu-wrapper {
+position:fixed;
+top:0;
+right:0;
+z-index:10;
+width:auto;
+background-color:#FFFFFF;
+border-bottom-left-radius:5px;
+}
+.header {
+margin:50% 2em 0;
+}
+.footer {
+position:absolute;
+bottom:0;
+width:100%;
+}
+.footer a {
+font-size:100%;
+}
+.badge {
+border-radius:5px;
+padding:5px;
+margin-right:-10px;
+background-color:#b0cadb;
+color:black;
+}
+.post-avatar,.actor-icon {
+border-radius:5px;
+}
+aside {
+background:#1f8dd6;
+margin:auto;
+margin-top:10%;
+padding:1em;
+border-radius:3px;
+color:#fff;
+font-size:25px;
+}
+aside input,aside textarea {
+color:#000000;
+font-size:20px;
+}
+.pure-button-success,
+.pure-button-error,
+.pure-button-warning,
+.pure-button-secondary {
+color: white;
+border-radius: 4px;
+text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.pure-button-success {
+background: rgb(28, 184, 65);
+}
+.pure-button-error {
+background: rgb(202, 60, 60);
+}
+.pure-button-warning {
+background: rgb(223, 117, 20);
+}
+.pure-button-secondary {
+background: rgb(66, 184, 221);
+}
+.img-attachment {
+max-width:100%;
+}
+.actor-box {
+border:2px solid #1f8dd6;
+border-radius:10px;
+padding:5px;
+margin-bottom:10px;
+width:400px;
+line-height:initial;
+min-height:64px;
+}
+.actor-button {
+float:right;
 }
 </style>
 {% block headers %}{% endblock %}
 </head>
 <body>
 {% if logged_in %}
-<div id="admin-menu-wrapper">
-<ul id="admin-menu">
-<li class="left"><a href="/admin" class="admin-title{% if request.path.startswith("/admin") %} selected{% endif %}">Admin</a></li>
-<li class="left"><a href="/" class="admin-title {% if not request.path.startswith("/admin") %} selected{% endif %}">Public</a></li>
-<li class="left"><a href="/admin/new"{% if request.path == "/admin/new" %} class="selected" {% endif %}>New</a></li>
-<li class="left"><a href="/admin/stream"{% if request.path == "/admin/stream" %} class="selected" {% endif %}>Stream</a></li>
-<li class="left"><a href="/admin/notifications"{% if request.path == "/admin/notifications" %} class="selected" {% endif %}>Notifications</a></li>
-<li class="left"><a href="/following"{% if request.path == "/following" %} class="selected" {% endif %}>Following</a></li>
-<li class="left"><a href="/admin/lookup"{% if request.path == "/admin/lookup" %} class="selected" {% endif %}>Lookup</a></li>
-<li class="left"><a href="/admin/logout">Logout</a></li>
+<div id="admin-menu-wrapper" class="pure-menu pure-menu-horizontal">
+<ul id="admin-menu" class="pure-menu-list">
+<li class="pure-menu-item{% if request.path == "/admin" %} pure-menu-selected{% endif %}"><a href="/admin" class="pure-menu-link" style="border-bottom-left-radius:5px">Admin</a></li>
+<li class="pure-menu-item{% if request.path == "/" %} pure-menu-selected{% endif %}"><a href="/" class="pure-menu-link">Public</a></li>
+<li class="pure-menu-item{% if request.path == "/admin/new" %} pure-menu-selected{% endif %}"><a href="/admin/new" class="pure-menu-link">New</a></li>
+<li class="pure-menu-item{% if request.path == "/admin/stream" %} pure-menu-selected{% endif %}"><a href="/admin/stream" class="pure-menu-link">Stream</a></li>
+<li class="pure-menu-item{% if request.path == "/admin/notifications" %} pure-menu-selected{% endif %}"><a href="/admin/notifications" class="pure-menu-link">Notifications</a></li>
+<li class="pure-menu-item{% if request.path == "/following" %} pure-menu-selected{% endif %}"><a href="/following" class="pure-menu-link">Following</a></li>
+<li class="pure-menu-item{% if request.path == "/admin/lookup" %} pure-menu-selected{% endif %}"><a href="/admin/lookup" class="pure-menu-link">Lookup</a></li>
+<li class="pure-menu-item"><a href="/admin/logout" class="pure-menu-link">Logout</a></li>
 </ul>
 </div>
 {% endif %}
-
-
-<div class="base-container">
+<div id="layout" class="pure-g">
 {% block content %}{% endblock %}
 </div>
-<div class="footer">
-<div>
-	Powered by <a href="https://microblog.pub">microblog.pub</a> <small class="microblogpub-version"><code>{{ microblogpub_version }}</code></small> (<a href="https://github.com/tsileo/microblog.pub">source code</a>) and the <a href="https://activitypub.rocks/">ActivityPub</a> protocol
-</div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/twemoji@12.0.0/2/twemoji.min.js"></script>
+<script src="{{ config.BASE_URL }}/twemoji.js"></script>
 <script>
 window.onload = function() { 
-    twemoji.base = "https://cdn.jsdelivr.net/npm/twemoji@12.0.0/2/";
-    twemoji.parse(document.body, {
-          folder: 'svg',
-          ext: '.svg'
-    });
+twemoji.parse(document.body, {
+folder: 'svg',
+ext: '.svg'
+});
 }
 </script>
 </body>

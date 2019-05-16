@@ -1,16 +1,11 @@
 {% extends "layout.html" %}
 {% import 'utils.html' as utils %}
-{% block header %}
-{% endblock %}
 {% block content %}
-<div id="container">
-<h2>You're about to follow <strong>{{ profile}} </strong></h2>
-
+<aside>You're about to follow <strong>{{ profile }}</strong><br/><br/>
 <form method="POST" action="">
 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 <input type="hidden" name="profile" value="{{ profile }}">
-<input type="submit" value="follow">
+<center><input type="submit" value="Follow" class="pure-button pure-button-success"></center>
 </form>
-
-</div>
+</aside>
 {% endblock %}

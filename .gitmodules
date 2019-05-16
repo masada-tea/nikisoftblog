@@ -1,0 +1,3 @@
+[submodule "poussetaches"]
+	path = poussetaches
+	url = https://github.com/tsileo/poussetaches

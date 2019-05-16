@@ -1,6 +1,17 @@
-username: 'username'
-name: 'You Name'
-icon_url: 'https://you-avatar-url'
-domain: 'your-domain.tld'
-summary: 'your summary'
+username: 'blog'
+name: 'My cool blog'
+default_icon: '/static/noavatar.svg'
+icon_url: '/static/my_avatar.png'
+domain: 'example.com'
+public_url: 'blog.example.com'
+summary: 'Just a test'
 https: true
+pass: 'dfvnjdsjvzjsbgviusbshrbhsrhbh'
+copyright: 'Author'
+imprint_url: '/static/my_imprint.html'
+privacy_url: '/static/my_privacy_policy.html'
+source_url: 'https://notabug.org/nipos/nikisoftblog'
+favicon_url: '/static/favicon.ico'
+hide_following: false
+limit: 10
+port: 5000

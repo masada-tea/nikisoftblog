@@ -4,18 +4,13 @@
 {% block header %}
 {% endblock %}
 {% block content %}
-<div id="container">
 {% include "header.html" %}
-
-<div id="followers">
-	{% for follower in followers_data %}
-    <div style="height: 100px;">
-	{{ utils.display_actor_inline(follower, size=80) }}
-    </div>
-	{% endfor %}
-    {{ utils.display_pagination(older_than, newer_than) }}
+<div class="content pure-u-1 pure-u-md-3-4" id="followers">
+{% for follower in followers_data %}
+{{ utils.display_actor_inline(follower, size=80) }}
+{% endfor %}
+{{ utils.display_pagination(older_than, newer_than) }}
 </div>
-
 </div>
 {% endblock %}
 {% block links %}

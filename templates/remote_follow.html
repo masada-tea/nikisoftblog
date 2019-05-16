@@ -1,17 +1,14 @@
 {% extends "layout.html" %}
 {% import 'utils.html' as utils %}
-{% block header %}
-{% endblock %}
 {% block content %}
-<div id="container">
 {% include "header.html" %}
-<h2 style="font-weight:normal">You're about to follow me <small style="font-weight:normal;font-family:sans-serif">\o/</small></h2>
-
-<form method="POST" action="">
-	<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-	<input type="text" name="profile" placeholder="you@your-instance">
-	<input type="submit" value="Proceed to remote follow">
-</form>
-
+<div class="content pure-u-1 pure-u-md-3-4">
+<aside style="width:550px">Please insert your username to proceed to follow!<br/><br/>
+<center><form method="POST" action="" style="display:inline">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<input type="text" name="profile" placeholder="you@your-instance"><br/><br/>
+<input type="submit" value="Proceed to remote follow" class="pure-button pure-button-success">
+</form></center>
+</aside>
 </div>
 {% endblock %}

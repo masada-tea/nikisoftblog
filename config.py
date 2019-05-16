@@ -18,20 +18,6 @@ from utils.key import get_key
 from utils.key import get_secret_key
 from utils.media import MediaCache
 
-
-class ThemeStyle(Enum):
-    LIGHT = "light"
-    DARK = "dark"
-
-
-DEFAULT_THEME_STYLE = ThemeStyle.LIGHT.value
-
-DEFAULT_THEME_PRIMARY_COLOR = {
-    ThemeStyle.LIGHT: "#1d781d",  # Green
-    ThemeStyle.DARK: "#33ff00",  # Purple
-}
-
-
 def noop():
     pass
 
@@ -62,31 +48,24 @@ with open(os.path.join(KEY_DIR, "me.yml")) as f:
     USERNAME = conf["username"]
     NAME = conf["name"]
     DOMAIN = conf["domain"]
+    PUBLIC_DOMAIN = conf["public_url"]
     SCHEME = "https" if conf.get("https", True) else "http"
-    BASE_URL = SCHEME + "://" + DOMAIN
+    BASE_URL = SCHEME + "://" + conf["public_url"]
+    ACTOR_URL = SCHEME + "://" + conf["domain"]
     ID = BASE_URL
     SUMMARY = conf["summary"]
-    ICON_URL = conf["icon_url"]
+    ICON_URL = conf.get("icon_url",conf["default_icon"])
     PASS = conf["pass"]
     EXTRA_INBOXES = conf.get("extra_inboxes", [])
-
-    HIDE_FOLLOWING = conf.get("hide_following", True)
-
-    # Theme-related config
-    theme_conf = conf.get("theme", {})
-    THEME_STYLE = ThemeStyle(theme_conf.get("style", DEFAULT_THEME_STYLE))
-    THEME_COLOR = theme_conf.get("color", DEFAULT_THEME_PRIMARY_COLOR[THEME_STYLE])
-
-
-SASS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sass")
-theme_css = f"$primary-color: {THEME_COLOR};\n"
-with open(os.path.join(SASS_DIR, f"{THEME_STYLE.value}.scss")) as f:
-    theme_css += f.read()
-    theme_css += "\n"
-with open(os.path.join(SASS_DIR, "base_theme.scss")) as f:
-    raw_css = theme_css + f.read()
-    CSS = sass.compile(string=raw_css, output_style="compressed")
-
+    COPYRIGHT = conf["copyright"]
+    IMPRINT = conf["imprint_url"]
+    PRIVACY = conf["privacy_url"]
+    SOURCE_URL = conf["source_url"]
+    DEFAULT_ICON = conf["default_icon"]
+    FAVICON = conf["favicon_url"]
+    HIDE_FOLLOWING = conf.get("hide_following", False)
+    LIMIT = conf.get("limit",10)
+    PORT = conf.get("port",5000)
 
 USER_AGENT = (
     f"{requests.utils.default_user_agent()} (microblog.pub/{VERSION}; +{BASE_URL})"
@@ -192,7 +171,36 @@ def _admin_jwt_token() -> str:
 ADMIN_API_KEY = get_secret_key("admin_api_key", _admin_jwt_token)
 
 ME = {
-    "@context": DEFAULT_CTX,
+    "@context":[
+	"https://www.w3.org/ns/activitystreams",
+	"https://w3id.org/security/v1",
+	{
+	    "manuallyApprovesFollowers":"as:manuallyApprovesFollowers",
+	    "toot":"http://joinmastodon.org/ns#",
+	    "featured":{
+		"@id":"toot:featured",
+		"@type":"@id"
+	    },
+	    "alsoKnownAs":{
+		"@id":"as:alsoKnownAs",
+		"@type":"@id"
+	    },
+	    "movedTo":{
+		"@id":"as:movedTo",
+		"@type":"@id"
+	    },
+	    "schema":"http://schema.org#",
+	    "PropertyValue":"schema:PropertyValue",
+	    "value":"schema:value",
+	    "Hashtag":"as:Hashtag",
+	    "Emoji":"toot:Emoji",
+	    "IdentityProof":"toot:IdentityProof",
+	    "focalPoint":{
+		"@container":"@list",
+		"@id":"toot:focalPoint"
+	    }
+	}
+    ],
     "type": "Person",
     "id": ID,
     "following": ID + "/following",
