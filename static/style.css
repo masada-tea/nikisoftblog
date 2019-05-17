@@ -132,10 +132,10 @@ text-shadow: 0 1px 1px #333;
 }
 .footer {
 padding: 1em 0;
+text-align:center;
 }
 .footer a {
 color: #ccc;
-font-size: 80%;
 }
 .footer .pure-menu a:hover,
 .footer .pure-menu a:focus {
@@ -147,7 +147,7 @@ padding: 2em 3em 0;
 margin-left: 25%;
 }
 .header {
-margin: 80% 2em 0;
+margin: 50% 2em 0;
 text-align: right;
 }
 .sidebar {
@@ -156,7 +156,7 @@ top: 0;
 bottom: 0;
 }
 .footer {
-text-align: center;
+position:absolute;
 }
 }
 .pure-g {
@@ -188,16 +188,9 @@ width:auto;
 background-color:#FFFFFF;
 border-bottom-left-radius:5px;
 }
-.header {
-margin:50% 2em 0;
-}
 .footer {
-position:absolute;
 bottom:0;
 width:100%;
-}
-.footer a {
-font-size:100%;
 }
 .badge {
 border-radius:5px;
