@@ -6,114 +6,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="shortcut icon" type="image/x-icon" href="{{ config.FAVICON }}">
 <title>{% block title %}{{ config.NAME }}{% endblock %}</title>
-<link rel="stylesheet" href="{{ config.BASE_URL }}/pure.css">
-<link rel="stylesheet" href="{{ config.BASE_URL }}/grids.css">
-<link rel="stylesheet" href="{{ config.BASE_URL }}/style.css">
-<link rel="stylesheet" href="{{ config.BASE_URL }}/fonts.css">
+<link rel="stylesheet" href="/static/pure.css">
+<link rel="stylesheet" href="/static/grids.css">
+<link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/fonts.css">
+<link rel="stylesheet" href="/static/cookie.css">
+<script src="/static/jquery.js"></script>
+<script src="/static/cookie.js"></script>
+<script>
+$(document).ready(function() {
+$.cookieBar();
+})
+</script>
 <link rel="authorization_endpoint" href="{{ config.ID }}/indieauth">
 <link rel="token_endpoint" href="{{ config.ID }}/token">
 {% if not request.args.get("older_than") and not request.args.get("previous_than") %}<link rel="canonical" href="{{ config.BASE_URL }}{{ request.path }}">{% endif %}
 {% block links %}{% endblock %}
-<style>
-.pure-g {
-letter-spacing:0;
-}
-.emoji {
-width:20px;
-margin-bottom:-5px;
-}
-.pure-button-group .action-form {
-display:inline-block;
-}
-.pure-button-group .pure-button {
-border-right:0;
-}
-.brand-title a {
-color:#FFFFFF;
-text-decoration:none;
-}
-a.pure-button,a.pure-menu-link {
-text-decoration:none;
-}
-#admin-menu-wrapper {
-position:fixed;
-top:0;
-right:0;
-z-index:10;
-width:auto;
-background-color:#FFFFFF;
-border-bottom-left-radius:5px;
-}
-.header {
-margin:50% 2em 0;
-}
-.footer {
-position:absolute;
-bottom:0;
-width:100%;
-}
-.footer a {
-font-size:100%;
-}
-.badge {
-border-radius:5px;
-padding:5px;
-margin-right:-10px;
-background-color:#b0cadb;
-color:black;
-}
-.post-avatar,.actor-icon {
-border-radius:5px;
-}
-aside {
-background:#1f8dd6;
-margin:auto;
-margin-top:10%;
-padding:1em;
-border-radius:3px;
-color:#fff;
-font-size:25px;
-}
-aside input,aside textarea {
-color:#000000;
-font-size:20px;
-}
-.pure-button-success,
-.pure-button-error,
-.pure-button-warning,
-.pure-button-secondary {
-color: white;
-border-radius: 4px;
-text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-}
-.pure-button-success {
-background: rgb(28, 184, 65);
-}
-.pure-button-error {
-background: rgb(202, 60, 60);
-}
-.pure-button-warning {
-background: rgb(223, 117, 20);
-}
-.pure-button-secondary {
-background: rgb(66, 184, 221);
-}
-.img-attachment {
-max-width:100%;
-}
-.actor-box {
-border:2px solid #1f8dd6;
-border-radius:10px;
-padding:5px;
-margin-bottom:10px;
-width:400px;
-line-height:initial;
-min-height:64px;
-}
-.actor-button {
-float:right;
-}
-</style>
 {% block headers %}{% endblock %}
 </head>
 <body>
@@ -134,7 +42,7 @@ float:right;
 <div id="layout" class="pure-g">
 {% block content %}{% endblock %}
 </div>
-<script src="{{ config.BASE_URL }}/twemoji.js"></script>
+<script src="/static/twemoji.js"></script>
 <script>
 window.onload = function() { 
 twemoji.parse(document.body, {

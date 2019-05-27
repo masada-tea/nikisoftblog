@@ -1,0 +1,13 @@
+(function($){$.fn.cookieBar=function(options){var settings=$.extend({'closeButton':'none','closeButtonText':'Got it!','secure':false,'path':'/','domain':''},options);return this.each(function(){var cookiebar=$(this);cookiebar.hide();if(settings.closeButton=='none')
+{cookiebar.append('<a class="cookiebar-close">'+settings.closeButtonText+'</a>');settings=$.extend({'closeButton':'.cookiebar-close'},options);}
+if($.cookie('cookiebar')!='hide'){cookiebar.show();}
+cookiebar.find(settings.closeButton).click(function(){cookiebar.hide();$.cookie('cookiebar','hide',{path:settings.path,secure:settings.secure,domain:settings.domain,expires:30});return false;});});};$.cookieBar=function(options){if(options&&options.hasOwnProperty("text")){$('body').prepend('<div class="ui-widget"><div style="display: none;" class="cookie-message ui-widget-header"><p>'+options.text+'</p></div></div>');}
+else{$('body').prepend('<div class="ui-widget"><div style="display: none;" class="cookie-message ui-widget-header"><p>This website uses cookies to ensure you get the best experience on our website.</p></div></div>');}
+$('.cookie-message').cookieBar(options);if(options&&options.hasOwnProperty("bgcolor")){$(".cookie-message").css("background-color",options.bgcolor);}
+else{$(".cookie-message").addClass("blue");}
+if(options&&options.hasOwnProperty("fcolor")){$(".cookie-message p").css("color",options.fcolor);$(".cookie-message a").css("color",options.fcolor);}
+else{$(".cookie-message p").css("color","#ffffff");$(".cookie-message a").css("color","#ffffff");}};})(jQuery);(function($){$.cookie=function(key,value,options){if(arguments.length>1&&(!/Object/.test(Object.prototype.toString.call(value))||value===null||value===undefined)){options=$.extend({},options);if(value===null||value===undefined){options.expires=-1;}
+if(typeof options.expires==='number'){var days=options.expires,t=options.expires=new Date();t.setDate(t.getDate()+days);}
+value=String(value);return(document.cookie=[encodeURIComponent(key),'=',options.raw?value:encodeURIComponent(value),options.expires?'; expires='+options.expires.toUTCString():'',options.path?'; path='+options.path:'',options.domain?'; domain='+options.domain:'',options.secure?'; secure':''].join(''));}
+options=value||{};var decode=options.raw?function(s){return s;}:decodeURIComponent;var pairs=document.cookie.split('; ');for(var i=0,pair;pair=pairs[i]&&pairs[i].split('=');i++){if(decode(pair[0])===key)return decode(pair[1]||'');}
+return null;};})(jQuery);
