@@ -15,3 +15,4 @@ favicon_url: '/static/favicon.ico'
 hide_following: false
 limit: 10
 port: 5000
+preview_limit: 0

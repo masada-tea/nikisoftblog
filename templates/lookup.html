@@ -15,17 +15,17 @@ Please enter the URL of a Mastodon/Pleroma profile or post.<br/><br/>
 {% set data = data.to_dict() %}
 <div id="lookup-result" style="margin-left:10%;margin-right:10%;margin-top:30px;width:100%">
 {% if data | has_actor_type %}
-{{ utils.display_actor_inline(data, size=80,actions={"followbtn":True}) }}
+{{ utils.display_actor_inline(data, default_avatar=config.DEFAULT_ICON, size=80,actions={"followbtn":True}) }}
 {% elif data | has_type('Create') %}
-{{ utils.display_note(data.object, ui=True) }}
+{{ utils.display_note(data.object, default_avatar=config.DEFAULT_ICON, ui=True) }}
 {% elif data | has_type(['Note', 'Article', 'Video']) %}
-{{ utils.display_note(data, ui=True) }}
+{{ utils.display_note(data, default_avatar=config.DEFAULT_ICON, ui=True) }}
 {% elif data | has_type('Announce') %}
 {% set boost_actor = meta.actor %}
 <p style="margin-left:65px;padding-bottom:5px;">
 <span class="bar-item-no-hover"><a style="color:#808080;" href="{{ boost_actor.url | get_url }}">{{ boost_actor.name }}</a> boosted</span>
 </p>
-{{ utils.display_note(meta.object, ui=False, meta={'actor': meta.object_actor}) }}
+{{ utils.display_note(meta.object, default_avatar=config.DEFAULT_ICON, ui=False, meta={'actor': meta.object_actor}) }}
 {% endif %}
 </div>
 {% endif %}

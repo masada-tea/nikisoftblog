@@ -7,7 +7,7 @@
 {% include "header.html" %}
 <div class="content pure-u-1 pure-u-md-3-4" id="following">
 {% for (follow_id, follow) in following_data %}
-{{ utils.display_actor_inline(follow, size=80,actions={"unfollowbtn":True,"fid":follow_id}) }}
+{{ utils.display_actor_inline(follow, default_avatar=config.DEFAULT_ICON, size=80,actions={"unfollowbtn":True,"fid":follow_id}) }}
 {% endfor %}
 {{ utils.display_pagination(older_than, newer_than) }}
 </div>

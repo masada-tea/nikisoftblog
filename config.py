@@ -66,6 +66,7 @@ with open(os.path.join(KEY_DIR, "me.yml")) as f:
     HIDE_FOLLOWING = conf.get("hide_following", False)
     LIMIT = conf.get("limit",10)
     PORT = conf.get("port",5000)
+    PREVIEW_LIMIT = conf.get("preview_limit",0)
 
 USER_AGENT = (
     f"{requests.utils.default_user_agent()} (microblog.pub/{VERSION}; +{BASE_URL})"

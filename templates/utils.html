@@ -1,9 +1,9 @@
-{% macro display_actor_inline(follower, size=50,actions={}) -%}
+{% macro display_actor_inline(follower, default_avatar, size=50,actions={}) -%}
 {% if follower and follower.id %}
 <div class="actor-box">
 <span style="float:left;padding-right:10px">
 {% if not follower.icon %}
-<img class="actor-icon" src="{{ config.DEFAULT_ICON }}" style="width:50px;height:50px">
+<img class="actor-icon" src="{{ default_avatar }}" style="width:50px;height:50px">
 {% else %}
 <img class="actor-icon" src="{{ follower.icon.url }}" style="width:50px;height:50px">{% endif %}
 </span>
@@ -35,7 +35,7 @@
 {% endif %}
 {%- endmacro %}
 
-{% macro display_note(obj, perma=False, ui=False, likes=[], shares=[], meta={}, no_color=False) -%}
+{% macro display_note(obj, default_avatar, perma=False, ui=False, likes=[], shares=[], meta={}, no_color=False, index=False, limit=0) -%}
 
 {% if meta.actor %}
     {% set actor = meta.actor %}
@@ -58,7 +58,7 @@
 {% endif %}
 <section class="post">
 <header class="post-header">
-<img width="48" height="48" class="post-avatar" src="{% if not actor.icon %}{{ config.DEFAULT_ICON }}{% else %}{{ actor.icon.url }}{% endif %}">
+<img width="48" height="48" class="post-avatar" src="{% if not actor.icon %}{{ default_avatar }}{% else %}{{ actor.icon.url }}{% endif %}">
 <p class="post-meta">
 <a href="{{ actor | url_or_id | get_url }}" class="no-hover"><strong>{{ actor.name or actor.preferredUsername }}</strong>
 <span class="l">@{% if not no_color and obj.id | is_from_outbox %}<span class="pcolor">{{ actor.preferredUsername }}</span>{% else %}{{ actor.preferredUsername }}{% endif %}@{% if not no_color and obj.id | is_from_outbox %}<span class="pcolor">{{ actor | url_or_id | get_url | domain }}</span>{% else %}{{ actor | url_or_id | get_url | domain }}{% endif %}</span></a> published
@@ -73,12 +73,16 @@
     </video>
     </div>
     {% endif %}
-
     <div class="note-container{% if perma %} perma{%endif%} p-name e-content">
     {% if obj | has_type('Article') %}
         {{ obj.name }} <a href="{{ obj | url_or_id | get_url }}">{{ obj | url_or_id | get_url }}</a>
     {% elif obj | has_type('Question') %}
-        {{ obj.content | clean | safe }}
+	{% if index and limit != 0 and obj.content|length > limit %}
+            {{ obj.content | truncate(limit) | clean | safe }}
+            <a href="{{ obj | url_or_id | get_url }}">Read more.</a>
+        {% else %}
+            {{ obj.content | clean | safe }}
+        {% endif %}
 
         {% if obj.id | is_from_outbox or (meta.question_replies and (obj.closed or meta.voted_for)) %}
         <ul style="list-style:none;padding:0;">
@@ -137,7 +141,12 @@
     {% endif %}
 
     {% else %}
-	{{ obj.content | clean | safe }}
+	{% if index and limit != 0 and obj.content|length > limit %}
+            {{ obj.content | truncate(limit) | clean | safe }}
+            <a href="{{ obj | url_or_id | get_url }}">Read more.</a>
+        {% else %}
+            {{ obj.content | clean | safe }}
+        {% endif %}
     {% endif %}
 	</div>
 
@@ -295,12 +304,12 @@
 
 {%- endmacro %}
 
-{% macro display_thread(thread, likes=[], shares=[]) -%}
+{% macro display_thread(thread, default_avatar, likes=[], shares=[]) -%}
 {% for reply in thread %}
 {% if reply._requested %}
-{{ display_note(reply.activity.object, perma=True, ui=False, likes=likes, shares=shares, meta=reply.meta) }}
+{{ display_note(reply.activity.object, default_avatar=default_avatar, perma=True, ui=False, likes=likes, shares=shares, meta=reply.meta) }}
 {% else %}
-{{ display_note(reply.activity.object, perma=False, ui=True, meta=reply.meta) }}
+{{ display_note(reply.activity.object, default_avatar=default_avatar, perma=False, ui=True, meta=reply.meta) }}
 {% endif %}
 {% endfor %}
 {% endmacro -%}

@@ -23,7 +23,7 @@
 <div class="posts">
 <h1 class="content-subhead">Pinned Posts</h1>
 {% for item in pinned %}
-{{ utils.display_note(item.activity.object, meta=item.meta, no_color=True) }}
+{{ utils.display_note(item.activity.object, default_avatar=config.DEFAULT_ICON, meta=item.meta, no_color=True, index=True, limit=config.PREVIEW_LIMIT) }}
 {% endfor %}
 </div>
 {% endif %}
@@ -36,10 +36,10 @@
 <p><span class="bar-item-no-hover"><a style="color:#808080;" href="{{ boost_actor.url | get_url }}">{{ boost_actor.name }}</a> boosted</span></p>
 {% endif %}
 {% if item.meta.object %}
-{{ utils.display_note(item.meta.object, ui=True, meta={'actor':item.meta.object_actor,'boosted':item.remote_id}) }}
+{{ utils.display_note(item.meta.object, default_avatar=config.DEFAULT_ICON, ui=True, meta={'actor':item.meta.object_actor,'boosted':item.remote_id}, index=True, limit=config.PREVIEW_LIMIT) }}
 {% endif %}
 {% elif item | has_type('Create') %}
-{{ utils.display_note(item.activity.object, meta=item.meta, no_color=True) }}
+{{ utils.display_note(item.activity.object, default_avatar=config.DEFAULT_ICON, meta=item.meta, no_color=True, index=True, limit=config.PREVIEW_LIMIT) }}
 {% endif %}
 {% endfor %}
 {{ utils.display_pagination(older_than, newer_than) }}

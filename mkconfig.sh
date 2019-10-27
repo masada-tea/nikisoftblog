@@ -11,6 +11,7 @@ read -p "Enter the link to your privacy policy: " privacy_url
 read -p "Enter the link to your favicon: " favicon_url
 read -p "Hide your followers? (true/false): " hide_following
 read -p "Post limit per page: " limit
+read -p "Length of preview texts on overview page: " preview_limit
 printf "Setting up your config..."
 cd config
 echo "default_icon: '/static/noavatar.svg'" > me.yml
@@ -29,6 +30,7 @@ echo "privacy_url: '$privacy_url'" >> me.yml
 echo "favicon_url: '$favicon_url'" >> me.yml
 echo "hide_following: $hide_following" >> me.yml
 echo "limit: $limit" >> me.yml
+echo "preview_limit: $preview_limit" >> me.yml
 echo "pass: ''" >> me.yml
 echo $port > /tmp/microblogpub_mkconfig_port.txt
 echo "done"

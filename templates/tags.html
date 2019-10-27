@@ -23,7 +23,7 @@
 <div class="posts">
 <h1 class="content-subhead">#{{ tag }}</h1>
 {% for item in outbox_data %}
-{{ utils.display_note(item.activity.object, meta=item.meta) }}
+{{ utils.display_note(item.activity.object, default_avatar=config.DEFAULT_ICON, meta=item.meta, index=True, limit=config.PREVIEW_LIMIT) }}
 {% endfor %}
 </div>
 </div>

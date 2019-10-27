@@ -22,7 +22,7 @@
 <div id="notes">
 <div class="posts">
 <h1 class="content-subhead">Thread</h1>
-{{ utils.display_thread(thread, likes=likes, shares=shares) }}
+{{ utils.display_thread(thread, default_avatar=config.DEFAULT_ICON, likes=likes, shares=shares) }}
 </div>
 </div>
 </div>
@@ -31,7 +31,7 @@
 <div id="notes">
 <div class="posts">
 <h1 class="content-subhead">Post</h1>
-{{ utils.display_thread(thread, likes=likes, shares=shares) }}
+{{ utils.display_thread(thread, default_avatar=config.DEFAULT_ICON, likes=likes, shares=shares) }}
 </div>
 </div>
 </div>

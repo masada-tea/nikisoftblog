@@ -9,7 +9,7 @@
 <h1 class="content-subhead">Liked Posts</h1>
 {% for item in liked %}
 {% if item.meta.object %}
-{{ utils.display_note(item.meta.object,ui=True,meta={'actor': item.meta.object_actor,'liked': item.remote_id}) }}
+{{ utils.display_note(item.meta.object, default_avatar=config.DEFAULT_ICON,ui=True,meta={'actor': item.meta.object_actor,'liked': item.remote_id}, index=True, limit=config.PREVIEW_LIMIT) }}
 {% endif %}
 {% endfor %}
 {{ utils.display_pagination(older_than, newer_than) }}
